@@ -36,19 +36,21 @@ const NavBar = () => {
                 <BNavbar.Collapse id="responsive-navbar-nav">
                     <Nav className="nav w-100 justify-content-end align-items-center" as="ul">
                         <Nav.Item as="li">
-                            <Nav.Link href="#home">Home</Nav.Link>
+                            <Nav.Link href="#">Home</Nav.Link>
                         </Nav.Item>
                         <Nav.Item as="li">
-                            <Nav.Link href="#mainpage">Main</Nav.Link>
+                            <Link href="/">Main</Link>
                         </Nav.Item>
                         <Nav.Item as="li">
-                            <Nav.Link href="#packages">Proposal Submit</Nav.Link>
+                            <Link href="/submit">Proposal Submit</Link>
                         </Nav.Item>
                         <Nav.Item as="li">
                             <Button variant="secondary" className="mx-2 my-1">connect wallet</Button>
                         </Nav.Item>
                         <Nav.Item as="li">
-                            <Button variant="primary" className="mx-2 my-1">JOIN NOW</Button>
+                            <Link href="#join-section">
+                                <Button variant="primary">JOIN NOW</Button>
+                            </Link>
                         </Nav.Item>
                     </Nav>
                 </BNavbar.Collapse>

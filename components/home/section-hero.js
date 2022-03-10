@@ -2,6 +2,7 @@ import React from "react"
 import Image from "next/image"
 import { Button, Row, Col } from "react-bootstrap";
 import imgHero from "../../assets/image/hero.png"
+import Link from "next/link";
 
 const SectionHero = () => {
     return (
@@ -17,9 +18,11 @@ const SectionHero = () => {
                     <h3 className="hero-description">
                         Anyone can be MTVPunks DAO members.
                     </h3>
-                    <Button variant="secondary">
-                        vote now
-                    </Button>
+                    <Link href="#section-vote">
+                        <Button variant="secondary">
+                            vote now
+                        </Button>
+                    </Link>
                 </Col>
             </Row>
 		</section>

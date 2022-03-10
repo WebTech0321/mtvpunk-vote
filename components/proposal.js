@@ -18,7 +18,7 @@ const ProposalItem = ({
                 }
             </div>
             <div className="card-tag ms-3">
-                <div className="proposal-card-title">
+                <div className="proposal-co-card-title">
                     {title}
                 </div>
                 <div className="proposal-card-status">

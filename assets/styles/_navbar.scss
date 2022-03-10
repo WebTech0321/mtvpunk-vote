@@ -41,8 +41,8 @@
     }
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: $white-color;
+.navbar-dark .navbar-nav a {
+    color: $white-color !important;
     font-size: 20px;
     padding: 8px 12px;
 

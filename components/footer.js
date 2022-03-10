@@ -16,7 +16,7 @@ const Footer = () => {
                             DAO members.
                         </div>
                     </Col>
-                    <Col xxl={8}>
+                    <Col xxl={8} id="join-section">
                         <Row className="gy-4">
                             <Col lg={4}>
                                 <h4 className="mb-lg-4 mb-2">ABOUT US</h4>
@@ -32,7 +32,7 @@ const Footer = () => {
                                 </div>       
                                 <div className="mb-2">
                                     <a href="#" target="_blank">
-                                        CONTACT
+                                        Contact
                                     </a>
                                 </div>
                                 <div className="mb-2">
@@ -48,19 +48,25 @@ const Footer = () => {
                             </Col>
                             <Col lg={4}>
                                 <h4 className="mb-lg-4 mb-2">FOLLOW US</h4>
-                                <div className="mb-2">
+                                {/* <div className="mb-2">
                                     <a href="#" target="_blank" className="follow-icon">
                                         <FontAwesomeIcon icon={['fab', 'facebook-f']}/>
                                         <span className="ms-2">Facebook</span>
                                     </a> 
-                                </div>                
+                                </div>                 */}
                                 <div className="mb-2">
-                                    <a href="#" target="_blank" className="follow-icon">
+                                    <a href="https://twitter.com/RealMTVPunks" target="_blank" className="follow-icon">
                                         <FontAwesomeIcon icon={['fab', 'twitter']}/>
                                         <span className="ms-2">Twitter</span>
                                     </a>
-                                </div>       
+                                </div>
                                 <div className="mb-2">
+                                    <a href="https://discord.gg/ztQByx4r" target="_blank" className="follow-icon">
+                                        <FontAwesomeIcon icon={['fab', 'discord']}/>
+                                        <span className="ms-2">Discord</span>
+                                    </a>
+                                </div>
+                                {/* <div className="mb-2">
                                     <a href="#" target="_blank" className="follow-icon">
                                         <FontAwesomeIcon icon={['fab', 'instagram']}/>
                                         <span className="ms-2">Instagram</span>
@@ -71,15 +77,15 @@ const Footer = () => {
                                         <FontAwesomeIcon icon={['fab', 'telegram-plane']}/>
                                         <span className="ms-2">Telegram</span>
                                     </a>
-                                </div>
+                                </div> */}
                             </Col>
                             <Col lg={4}>
                                 <h4 className="mb-lg-4 mb-2">CONTACT</h4>
-                                <div className="mb-lg-3 mb-2 mail-icon">
+                                <div className="d-inline-flex mb-lg-3 mb-2 mail-icon no-wrap">
                                     <FontAwesomeIcon icon={'envelope'} />
-                                    <span className="ms-2">Lorem@gmail.com</span>
+                                    <a className="d-inline ms-2" href="mailto:mtvpunks@gmail.com">mtvpunks@gmail.com</a>
                                 </div>
-                                <div className="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                {/* <div className="d-flex align-items-center justify-content-center justify-content-lg-start">
                                     <a href="#" target="_blank" className="social-icon">
                                         <FontAwesomeIcon icon={['fab', 'facebook-f']} color="#7951EC"/>
                                     </a>                        
@@ -95,7 +101,7 @@ const Footer = () => {
                                     <a href="#" target="_blank" className="social-icon">
                                         <FontAwesomeIcon icon={['fab', 'google-plus-g']} color="#7951EC"/>
                                     </a>
-                                </div>
+                                </div> */}
                             </Col>
                         </Row>
                         

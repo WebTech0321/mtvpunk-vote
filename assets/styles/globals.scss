@@ -1,6 +1,6 @@
 @import 'variables';
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
 
 $theme-colors: (
   primary: $primary-color
@@ -241,6 +241,21 @@ h4 {
   border-radius: 50px;
 }
 
+.co-card-secondary {
+  background: $secondary-gradient;
+  backdrop-filter: blur(60px); 
+  border-radius: 50px;
+
+  & .co-card-title {
+    font-size: 26px;
+    padding: 30px 20px 24px 20px;
+    border-bottom: 1px solid #FFFFFF;
+  }
+  & .co-card-body {
+    padding: 20px 20px 32px 20px;
+  }
+}
+
 .home-vote-card,
 .home-vote-card-header {
   height: 230px;
@@ -296,7 +311,7 @@ h4 {
   cursor: pointer;
 
   & .arrow {
-    transition: all 0.5s;
+    transition: transform 0.5s;
   }
 
   &.open {
@@ -417,6 +432,8 @@ footer {
 
 .proposal-card {
   padding: 20px;
+  transition: transform .5s;
+  cursor: pointer;
 
   &-image-wrapper {    
     width: 200px;
@@ -434,6 +451,10 @@ footer {
   
   &-status {
     font-size: 36px;
+  }
+
+  &:hover {
+    transform: scale(1.03);
   }
 }
 
@@ -475,8 +496,98 @@ footer {
   }
 }
 
+.submit-wall-image {
+  width: 100%;
+  border-radius: 50px;
+  margin-top: 20px;
+  margin-bottom: 90px;
+}
+
+.co-input,
+.co-textarea {
+  width: 100%;
+  margin-bottom: 0px;
+  border: 3px solid #D6D6D6;
+  border-radius: 24px;
+  background-color: transparent;
+  font-size: 36px;
+  padding: 28px 30px;
+  vertical-align: middle;
+  color: $white-color;
+
+  &:focus {
+    outline: 0;
+  }
+}
+.input-label {
+  font-size: 36px;
+}
+
+.input-status {
+  text-align: right;
+}
+
 .pointer {
   cursor: pointer;
+}
+
+.proposal-detail-title {
+  font-size: 58px;
+  font-weight: 600;
+}
+
+.btn-vote {
+  width: 156px;
+}
+
+.vote-badge {
+  background: #1D0D52;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  color: $white-color;
+  border-radius: 50%;
+}
+
+.co-account {
+  font-size: 25px;
+  & > img {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 50%;
+    margin-right: 24px;
+  }
+}
+
+.vote-table {
+  width: 100%;
+  & > tr {
+
+    & > td {
+      padding: 14px 46px;
+    }
+    border-top: 1px solid $white-color;
+  }
+}
+
+.label-vote-status {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.co-progress {
+  & .progress {
+    height: 15px;
+    border-radius: 50px;
+    background-color: #C4C4C4;
+
+    & .progress-bar {
+      border-radius: 50px;
+    }
+  }
 }
 
 @media (max-width: ($screen-lg - 1px)){
@@ -493,12 +604,36 @@ footer {
     font-size: 16px;
   }
 
+  h1 {
+    font-size: 21px;
+  }
+  
+  h2 {
+    font-size: 28px;
+  }
+  
+  h3 {
+    font-size: 24px;
+  }
+
   h4 {
     font-size: 18px;
   }
 
   .co-card {
     border-radius: 30px;
+  }
+  
+  .co-card-secondary {
+    border-radius: 30px;
+    
+    & .co-card-title {
+      font-size: 24px;
+      padding: 15px 28px 11px 28px;
+    }
+    & .co-card-body {
+      padding: 16px 20px;
+    }
   }
 
   .section-hero {
@@ -651,19 +786,53 @@ footer {
       height: 10px;
     }
   }
-}
+   
+  .input-label {
+    font-size: 14px;
+  }
 
-@media (max-width: ($screen-sm - 1px)){
-  
-  h1 {
-    font-size: 21px;
+  .co-input,
+  .co-textarea {
+    border: 1px solid #D6D6D6;
+    font-size: 13px;
   }
   
-  h2 {
-    font-size: 28px;
+  .co-input {
+    padding: 4px 10px;
   }
   
-  h3 {
-    font-size: 24px;
+  .co-textarea {
+    padding: 10px 10px;
+  }
+
+  
+  .proposal-detail-title {
+    font-size: 27px;
+  }
+  
+  .btn-vote {
+    width: 70px;
+  }
+    
+  .co-account {
+    font-size: 14px;
+    & > img {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      margin-right: 14px;
+    }
+  }
+  
+  .vote-table {
+    & > tr {
+      & > td {
+        padding: 10px 16px;
+      }
+    }
+  }
+  
+  .label-vote-status {
+    font-size: 14px;
   }
 }
