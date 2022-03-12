@@ -28,6 +28,10 @@ export default async function handler(req, res) {
         if(req.address !== address)
             return res.status(401).json({ errorMessage: 'error with jwt' });
 
+        const remainTime = await proposalService.getRemainTimeToSubmit(req.userId)
+        if(remainTime > 0)
+            return res.status(400).json({ errorMessage: 'need to wait to submit next proposal' });
+
         const proposal = await proposalService.createProposal(req.userId, title, description)
         return res.status(200).send({success: true, proposal: proposal})
     }

@@ -30,6 +30,18 @@ class ProposalApi extends BaseApi {
       }
     );
   }
+
+  getRecentPassed() {
+    return this.instance.get(
+      `/api/proposal/recent-passed`
+    );
+  }
+
+  getRemainingTimeForNext() {
+    return this.instance.get(
+      `/api/proposal/remain-time`
+    );
+  }
 }
   
 export default new ProposalApi();

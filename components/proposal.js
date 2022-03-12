@@ -6,6 +6,10 @@ import useContracts from "../shared/hooks/useContracts";
 import { datetime2str, remainingTime } from "../utils";
 import ProposalStatus from "./proposal-status";
 
+const STATUS_ACCEPTED = 1
+const STATUS_REJECTED = 2
+const STATUS_NOT_APPLIED = 3
+
 const ProposalItem = ({
     title, createdAt, leading, status
 }) => {
@@ -30,9 +34,9 @@ const ProposalItem = ({
     return (
 	    <div className="co-card proposal-card d-flex mb-3">
             <div className="co-card proposal-card-image-wrapper">
-                {status === 'Active' ? 
+                {status === STATUS_ACCEPTED ? 
                     <img src={imgPropIcon01} /> :
-                    status === 'Rejected' ? 
+                    status === STATUS_REJECTED ? 
                     <img src={imgPropIcon02} /> :
                     <img src={imgPropIcon03} />
                 }

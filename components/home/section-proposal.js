@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router";
 import { Button, Row, Col } from "react-bootstrap";
 import Proposal from "../proposal";
 import Pagination from "../pagination";
 import ProposalApi from "../../api/ProposalApi"
+import { notificationWarning } from "../../utils/notification";
+import { remainingTime } from "../../utils";
 
 const MAX_PROPOSAL_PER_PAGE = 3;
 
 const SectionProposal = () => {
+    const router = useRouter
 
     const [page, setPage] = useState(1)
     const [pages, setPages] = useState(1)
@@ -31,16 +35,29 @@ const SectionProposal = () => {
       setPagedProposals(proposals.slice((page - 1) * MAX_PROPOSAL_PER_PAGE, page * MAX_PROPOSAL_PER_PAGE))
     }, [page, proposals])
 
+    const gotoSubmit = () => {
+      ProposalApi.getRemainingTimeForNext()
+        .then((resp) => {
+          const remainTime = resp.data?.data
+          if(remainTime === 0)
+            router.push(`submit`)
+          else
+            notificationWarning(`${remainingTime(remainTime)} until next submit`)
+        })
+        .catch((e) => {
+          notificationWarning("You have already posted today...")
+        })
+      
+    }
+
     return (
 	    <section id="section-vote" className="section-proposal">
-            <Link href="/submit">
-              <Button variant="secondary" className="float-end">Submit</Button>
-            </Link>
+            <Button variant="secondary" className="float-end" onClick={gotoSubmit}>Submit</Button>
             <h1 className="text-center">Proposal</h1>
             {pagedProposals.map((item) => (
             <Link href={`/proposal/${item.id}`} key={`proposal-${item.id}`}>
               <a>
-                <Proposal title={item.name} createdAt={item.created_at} leading={true} status="Active"/>
+                <Proposal title={item.name} createdAt={item.created_at} leading={true} status={item.status}/>
               </a>
             </Link>
             ))}

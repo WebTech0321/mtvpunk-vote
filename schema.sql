@@ -12,7 +12,9 @@ CREATE TABLE proposals (
   user_id bigint NOT NULL REFERENCES users(id),
   name text NOT NULL,
   description text NOT NULL,
+  status int,
   created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
+  finished_at timestamp without time zone 
 );
 
 CREATE TABLE votes (

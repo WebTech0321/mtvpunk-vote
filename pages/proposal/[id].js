@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react"
 import { useRouter } from 'next/router'
 import { Button, Row, Col, Spinner } from "react-bootstrap"
 import ProposalStatus from "../../components/proposal-status"
-import imgAvatar from "../../assets/image/avatar.png"
 import Account from "../../components/account"
 import { formatMoney, datetime2str } from "../../utils"
 import Progress from "../../components/progress"
@@ -11,6 +10,8 @@ import useContracts from '../../shared/hooks/useContracts'
 import useWeb3 from '../../shared/hooks/useWeb3'
 import ProposalApi from "../../api/ProposalApi"
 import { notificationWarning, notificationSuccess, notificationDanger } from "../../utils/notification"
+import imgAvatar from "../../assets/image/avatar.png"
+import imgStatus from "../../assets/image/status.svg"
 
 const STATUS_NOT_APPLIED = 0
 const STATUS_ACCEPTED = 1
@@ -43,8 +44,8 @@ export async function getServerSideProps(context) {
 export default function ProposalDetails({ proposal, votes }) {
     const router = useRouter()
     const { id } = router.query
-    const { connected, walletAddress, handleConnect } = useWeb3()
-    const { getTotalSupply, getVoting, getVoteOf, voteProposal } = useContracts()
+    const { connected, walletAddress, handleConnect, waitForTransaction } = useWeb3()
+    const { getTotalSupply, getVoting, getVoteOf, voteProposal, executeVoting } = useContracts()
 
     const [pending, setPending] = useState(false)
     const [totalSupply, setTotalSupply] = useState()
@@ -66,6 +67,10 @@ export default function ProposalDetails({ proposal, votes }) {
         const result = await getVoteOf(id)
         setMyVoteStatus(result)
     }, [getVoteOf])
+    
+    // const exeVoting = () => {
+    //     executeVoting(id)
+    // }
 
     const voteAgree = () => {
         voteProp(STATUS_ACCEPTED)
@@ -83,22 +88,29 @@ export default function ProposalDetails({ proposal, votes }) {
         setPending(true)
         
         voteProposal(id, vote).then((result) => {
-            if(result){
-                ProposalApi.vote(id, walletAddress, vote)
+            if(result?.hash){
+                waitForTransaction(result.hash, 1000)
+                .then(() => {
+                    ProposalApi.vote(id, walletAddress, vote)
                     .then((resp) => {
                         setPending(false)
                         if(resp.data?.success) {
                             notificationSuccess("Success to vote proposal")
                             router.reload()
                         } else {
-                            notificationDanger("Failed to vote proposal")    
+                            notificationDanger("Failed to save database")    
                         }
                     })
                     .catch((error) => {
                         console.log(error)
                         setPending(false)
-                        notificationDanger("Failed to vote proposal")
+                        notificationDanger("Failed to save database")
                     })
+                })
+                .catch((error) => { 
+                    setPending(false)
+                    notificationDanger("Failed transaction");
+                })
             } else {
                 setPending(false)
                 notificationDanger("Failed to vote proposal")    
@@ -215,7 +227,8 @@ export default function ProposalDetails({ proposal, votes }) {
 
                     <div className="co-card-secondary mb-2">
                         <div className="co-card-title">Your Vote Status</div>
-                        <div className="co-card-body">
+                        <div className="co-card-body text-center">
+                            <img src={imgStatus} className="my-2" />
                             <div className="label-vote-status">
                                 {
                                     myVoteStatus === STATUS_ACCEPTED ? 

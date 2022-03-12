@@ -9,6 +9,7 @@ import addresses from '../../addresses'
 const Provider = ({ children }) => {
   
   const PROPOSAL_LIFETIME = 3600 * 24 * 7 * 1000;  // 7 days
+  // const PROPOSAL_LIFETIME = 60 * 1 * 1000;  // 1 mins
 
   const [mtvpunksContract, setMTVPunksContract] = useState(
     new Contract(addresses.MtvPunks, abis.MtvPunks)
@@ -89,12 +90,21 @@ const Provider = ({ children }) => {
     if (!walletAddress || !votingContract?.signer) return false
     
     try {
-      await votingContract.vote(votingID, status)
-      return true
+      return await votingContract.vote(votingID, status)
     } catch (e) {}
     return false
   }, [walletAddress, votingContract] )
-
+  
+  const executeVoting = useCallback(async (votingID) => {
+    if (!walletAddress || !votingContract?.signer) return false
+    try {
+      return await votingContract.executeVoting(votingID)
+    } catch (e) {
+      console.log(e)
+    }
+    return false
+  }, [walletAddress, votingContract] )
+  
   return (
     <Context.Provider
       value={{
@@ -104,6 +114,7 @@ const Provider = ({ children }) => {
         getVoting,
         getVoteOf,
         voteProposal,
+        executeVoting,
         PROPOSAL_LIFETIME
       }}
     >
