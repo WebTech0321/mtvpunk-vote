@@ -5,8 +5,8 @@ import SectionRecent from "../components/home/section-recent"
 import SectionHowTo from "../components/home/section-how-to"
 import SectionProposal from "../components/home/section-proposal"
 
-
 export default function Home(props) {
+
   return (
     <>
       <SectionHero />

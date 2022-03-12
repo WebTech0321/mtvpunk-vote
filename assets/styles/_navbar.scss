@@ -34,10 +34,19 @@
     background-color: $navbar-bg-color;
     z-index: 10;
 
-    &.show {
-        padding: 12px 20px;
-        background-color: $secondary-color;
-        border-radius: 30px;
+    @media (max-width: ($screen-xl - 1px)){
+        &.show {
+            display: flex;
+            justify-content: center;
+            height: calc(100vh - $navbar-height);
+            padding: 12px 20px;
+            background-color: $secondary-color;
+            border-radius: 30px;
+        }
+
+        .nav-item {
+            margin: 12px 0;
+        }
     }
 }
 

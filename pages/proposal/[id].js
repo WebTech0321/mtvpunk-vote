@@ -1,23 +1,113 @@
 import React, {useState, useEffect} from "react"
 import { useRouter } from 'next/router'
-import { Button, Row, Col } from "react-bootstrap"
+import { Button, Row, Col, Spinner } from "react-bootstrap"
 import ProposalStatus from "../../components/proposal-status"
 import imgAvatar from "../../assets/image/avatar.png"
 import Account from "../../components/account"
 import { formatMoney, datetime2str } from "../../utils"
 import Progress from "../../components/progress"
+import { server } from "../../config"
+import useContracts from '../../shared/hooks/useContracts'
+import useWeb3 from '../../shared/hooks/useWeb3'
+import ProposalApi from "../../api/ProposalApi"
+import { notificationWarning, notificationSuccess, notificationDanger } from "../../utils/notification"
 
-export default function ProposalDetails() {
+const STATUS_NOT_APPLIED = 0
+const STATUS_ACCEPTED = 1
+const STATUS_REJECTED = 2
+
+export async function getServerSideProps(context) {
+    const res = await fetch(`${server}/api/proposal/${context.params.id}`)
+    const data = await res.json()
     
+    if( res.status !== 200 ) {
+        return {
+            notFound: true,
+        };
+    }
+
+    const resVote = await fetch(`${server}/api/proposal/${context.params.id}/vote`)
+    const votes = await resVote.json()
+    
+    if( res.status !== 200 ) {
+        return {
+            notFound: true,
+        };
+    }
+    
+    return {
+        props: { proposal: data, votes: votes }, // will be passed to the page component as props
+    }
+}
+
+export default function ProposalDetails({ proposal, votes }) {
     const router = useRouter()
     const { id } = router.query
+    const { connected, walletAddress, handleConnect } = useWeb3()
+    const { getTotalSupply, getVoting, getVoteOf, voteProposal } = useContracts()
+
+    const [pending, setPending] = useState(false)
+    const [totalSupply, setTotalSupply] = useState()
+    const [voteStatus, setVoteStatus] = useState()
+    const [myVoteStatus, setMyVoteStatus] = useState()
+    
+    useEffect(async () => {
+        const supply = await getTotalSupply()
+        setTotalSupply(supply)
+    }, [getTotalSupply])
+    
+    useEffect(async () => {
+        const result = await getVoting(id)
+        if(result)
+            setVoteStatus(result)
+    }, [getVoting])
+
+    useEffect(async () => {
+        const result = await getVoteOf(id)
+        setMyVoteStatus(result)
+    }, [getVoteOf])
 
     const voteAgree = () => {
-
+        voteProp(STATUS_ACCEPTED)
     }
 
     const voteDisagree = () => {
+        voteProp(STATUS_REJECTED)
+    }
 
+    const voteProp = (vote) => {
+        if(!connected || !walletAddress) {
+            return handleConnect()
+        }
+
+        setPending(true)
+        
+        voteProposal(id, vote).then((result) => {
+            if(result){
+                ProposalApi.vote(id, walletAddress, vote)
+                    .then((resp) => {
+                        setPending(false)
+                        if(resp.data?.success) {
+                            notificationSuccess("Success to vote proposal")
+                            router.reload()
+                        } else {
+                            notificationDanger("Failed to vote proposal")    
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setPending(false)
+                        notificationDanger("Failed to vote proposal")
+                    })
+            } else {
+                setPending(false)
+                notificationDanger("Failed to vote proposal")    
+            }
+        })
+        .catch((e) => {
+            setPending(false)
+            notificationDanger("Canceled to vote proposal")    
+        })
     }
 
     return (
@@ -26,68 +116,55 @@ export default function ProposalDetails() {
                 <Col xl={8}>
                     <div className="co-card p-4 pt-2 mb-2">
                         <div className="proposal-detail-title">
-                            Add the location-80,-57 to the Points of Interest
+                            {proposal.name}
                         </div>
                         <Row className="gy-2 gx-lg-4">
                             <Col sm='auto'>
                                 <ProposalStatus status="Active" />
                             </Col>
                             <Col>
-                                <Account prefix="Boson Protocol DAO by " address="0x759dsdfgsdfgsdfdD5A" />
+                                <Account prefix="Created by " address={proposal.address} />
                             </Col>
                         </Row>
                         <div className="proposal-detail-desc my-lg-3 my-2">
-                            What would our community like to see more of in 2022 and from the DAO?
+                            {proposal.description}
                         </div>
+                        {myVoteStatus === STATUS_NOT_APPLIED && 
                         <div className="d-flex">
-                            <Button variant="secondary" className="btn-vote me-3" onClick={voteAgree}>
-                                Yes
+                            <Button variant="secondary" className="btn-vote me-3" onClick={voteAgree} disabled={pending}>
+                                <span>Yes</span>
+                                {pending && 
+                                <Spinner animation="border" role="status" size="sm" className="ms-1" />
+                                }
                             </Button>
-                            <Button variant="secondary" className="btn-vote" onClick={voteDisagree}>
-                                No
+                            <Button variant="secondary" className="btn-vote" onClick={voteDisagree} disabled={pending}>
+                                <span>No</span>
+                                {pending && 
+                                <Spinner animation="border" role="status" size="sm" className="ms-1" />
+                                }
                             </Button>
                         </div>
+                        }
                     </div>
 
                     <div className="co-card mb-2">
                         <div className="py-lg-3 py-2 px-lg-4 px-2 d-flex align-items-center">
                             <h3 className="me-2 mb-0">Votes</h3>
-                            <div className="vote-badge">10</div>
+                            <div className="vote-badge">{votes?.length}</div>
                         </div>
                         <table className="vote-table">
-                            <tr>
-                                <td>
-                                    <Account address="0x759dsdfgsdfgsdfdD5A" />
-                                </td>
-                                <td>
-                                    Proposal 30
-                                </td>
-                                <td className="text-end">
-                                    Agree 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Account address="0x759dsdfgsdfgsdfdD5A" />
-                                </td>
-                                <td>
-                                    Proposal 30
-                                </td>
-                                <td className="text-end">
-                                    Agree 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Account address="0x759dsdfgsdfgsdfdD5A" />
-                                </td>
-                                <td>
-                                    Proposal 30
-                                </td>
-                                <td className="text-end">
-                                    Agree 
-                                </td>
-                            </tr>
+                            <tbody>
+                                {votes?.map((vote) => (
+                                <tr key={`vote-${vote.id}`}>
+                                    <td>
+                                        <Account address={vote.address} />
+                                    </td>
+                                    <td className="text-end">
+                                        {vote.vote === STATUS_ACCEPTED ? 'Agree' : 'Disagree'}
+                                    </td>
+                                </tr>
+                                ))}
+                            </tbody>
                         </table>
                     </div>
                 </Col>
@@ -97,7 +174,11 @@ export default function ProposalDetails() {
                         <div className="co-card-body">
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">Strategie(S)</div>
-                                <div>0</div>
+                                <div className="d-flex">
+                                    <img src={imgAvatar} className="ms-2 round" width="40px" height="40px" />
+                                    <img src={imgAvatar} className="ms-2 round" width="40px" height="40px"/>
+                                    <img src={imgAvatar} className="ms-2 round" width="40px" height="40px"/>
+                                </div>
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">Voting System</div>
@@ -105,43 +186,44 @@ export default function ProposalDetails() {
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">Start date</div>
-                                <div>{datetime2str(new Date())}</div>
+                                <div>{datetime2str(proposal.created_at)}</div>
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">End date</div>
-                                <div>{datetime2str(new Date())}</div>
+                                <div>{datetime2str(proposal.created_at)}</div>
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">Minted NFTs</div>
-                                <div>{formatMoney(10000000)}</div>
+                                <div>{formatMoney(totalSupply)}</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="co-card-secondary mb-2">
-                        <div className="co-card-title">Get Voting</div>
+                        <div className="co-card-title">Vote</div>
                         <div className="co-card-body">
-                            <Progress label="Agree" value={80.5} />
-                            <div className="mt-lg-3 mt-2">
-                                <Progress label="Disagree" value={19.5} />
-                            </div>
+                            {voteStatus && 
+                            <>
+                                <Progress label="Agree" value={voteStatus.total === 0 ? 0 : voteStatus.accepted * 100 / voteStatus.total} />
+                                <div className="mt-lg-3 mt-2">
+                                    <Progress label="Disagree" value={voteStatus.total === 0 ? 0 : voteStatus.rejected * 100 / voteStatus.total}/>
+                                </div>
+                                </>
+                            }
                         </div>
                     </div>
 
                     <div className="co-card-secondary mb-2">
-                        <div className="co-card-title">Get Vote Of</div>
+                        <div className="co-card-title">Your Vote Status</div>
                         <div className="co-card-body">
-                            <div className="d-flex justify-content-between mb-2">
-                                <div className="label-vote-status">Not Applied</div>
-                                <div>0</div>
-                            </div>
-                            <div className="d-flex justify-content-between mb-2">
-                                <div className="label-vote-status">Accepted</div>
-                                <div>0</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="label-vote-status">Rejected</div>
-                                <div>0</div>
+                            <div className="label-vote-status">
+                                {
+                                    myVoteStatus === STATUS_ACCEPTED ? 
+                                    'You voted for this proposal' : 
+                                    myVoteStatus === STATUS_REJECTED ? 
+                                    'You rejected for this proposal' : 
+                                    "You haven't applied yet"
+                                }
                             </div>
                         </div>
                     </div>

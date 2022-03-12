@@ -26,6 +26,18 @@ export function secondsToDHM(seconds) {
     return dDisplay + hDisplay + m + " mins";
 }
 
+export function remainingTime(seconds) {
+    seconds = Number(seconds / 1000);
+    const d = Math.floor(seconds / (3600*24));
+    const h = Math.floor(seconds % (3600*24) / 3600);
+    const m = Math.ceil(seconds % 3600 / 60);
+
+    if( d > 0 ) return `${d} days`
+    if( h > 0 ) return `${h + 1} hours`
+    
+    return `${m} minutes`
+}
+
 export function shortAmount(val) {
     if (val > 1000000000) {
         return (val / 1000000000).toFixed(2) + "B"

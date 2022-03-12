@@ -1,13 +1,61 @@
 import React, {useState, useEffect} from "react"
+import { useRouter } from 'next/router'
 import imgWall from "../assets/image/submit-wall.jpg"
-import { Button } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
+import { notificationWarning, notificationSuccess, notificationDanger } from "../utils/notification"
+import ProposalApi from "../api/ProposalApi"
+import useWeb3 from "../shared/hooks/useWeb3"
+import useContracts from "../shared/hooks/useContracts"
 
 export default function Submit(props) {
+    const router = useRouter()
     const [question, setQuestion] = useState('')
     const [description, setDescription] = useState('')
 
-    const handleSubmit = () => {
+    const [pending, setPending] = useState(false)
+    const { connected, walletAddress, handleConnect } = useWeb3()
+    const { startVoting } = useContracts()
 
+    const handleSubmit = () => {
+        if(!connected) {
+            return handleConnect()
+        }
+        if(!walletAddress) return;
+
+        if(question.length === 0) {
+            return notificationWarning("Please input question")
+        }
+
+        if(description.length === 0) {
+            return notificationWarning("Please input description")
+        }
+        setPending(true)
+        
+        startVoting(question).then((result) => {
+            if(result){
+                ProposalApi.createProposal(walletAddress, question, description)
+                .then((resp) => {
+                    setPending(false)
+                    if(resp.data?.success) {
+                        notificationSuccess("Success to submit proposal")
+                        router.push(`proposal/${resp.data.proposal.id}`)
+                    } else {
+                        notificationDanger("Failed to submit proposal")    
+                    }
+                })
+                .catch((error) => {
+                    setPending(false)
+                    notificationDanger("Failed to submit proposal")    
+                })
+            } else {
+                setPending(false)
+                notificationDanger("Failed to submit proposal")    
+            }
+        })
+        .catch((e) => {
+            setPending(false)
+            notificationDanger("Canceled to submit proposal")    
+        })
     }
 
     return (
@@ -42,8 +90,13 @@ export default function Submit(props) {
                 ({description.length} out of 7000 characters)
             </div>
 
-            <Button variant="secondary" onClick={handleSubmit}>
-                Submit Proposals
+            <Button variant="secondary" onClick={handleSubmit} disabled={pending}>
+                <span>Submit Proposals</span>
+                {pending && 
+                <Spinner animation="border" role="status" size="sm" className="ms-1">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+                }
             </Button>
         </div>
     )

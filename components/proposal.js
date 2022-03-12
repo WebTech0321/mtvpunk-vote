@@ -1,12 +1,32 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import imgPropIcon01 from "../assets/image/proposal-icon-01.svg"
 import imgPropIcon02 from "../assets/image/proposal-icon-02.svg"
 import imgPropIcon03 from "../assets/image/proposal-icon-03.svg"
+import useContracts from "../shared/hooks/useContracts";
+import { datetime2str, remainingTime } from "../utils";
 import ProposalStatus from "./proposal-status";
 
 const ProposalItem = ({
-    title, leading, status
+    title, createdAt, leading, status
 }) => {
+    const { PROPOSAL_LIFETIME } = useContracts()
+    const [timeRemaining, setTimeRemaining] = useState()
+
+    useEffect(() => {
+        const startedTime = new Date(createdAt)
+        const endTime = new Date(startedTime.getTime() + PROPOSAL_LIFETIME)
+        const now = new Date()
+        if( createdAt ) {
+            const remaining = endTime - now.getTime()
+            if(remaining > 0) {
+                setTimeRemaining(remainingTime(endTime - now.getTime()))
+            } else {
+                setTimeRemaining()
+            }
+        }
+    }, [createdAt])
+    
+
     return (
 	    <div className="co-card proposal-card d-flex mb-3">
             <div className="co-card proposal-card-image-wrapper">
@@ -18,7 +38,7 @@ const ProposalItem = ({
                 }
             </div>
             <div className="card-tag ms-3">
-                <div className="proposal-co-card-title">
+                <div className="proposal-card-title">
                     {title}
                 </div>
                 <div className="proposal-card-status">
@@ -36,7 +56,7 @@ const ProposalItem = ({
                         </div>
 
                         <span className="ms-lg-2 ms-1">
-                            Ends in 13 day
+                            {timeRemaining ? `Ends in ${timeRemaining}` : 'Ended'}
                         </span>
                     </div>
                 </div>

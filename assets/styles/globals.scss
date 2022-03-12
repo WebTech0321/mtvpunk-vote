@@ -564,8 +564,7 @@ footer {
 
 .vote-table {
   width: 100%;
-  & > tr {
-
+  & tbody > tr {
     & > td {
       padding: 14px 46px;
     }
@@ -588,6 +587,10 @@ footer {
       border-radius: 50px;
     }
   }
+}
+
+.round {
+  border-radius: 50%;
 }
 
 @media (max-width: ($screen-lg - 1px)){
@@ -825,10 +828,8 @@ footer {
   }
   
   .vote-table {
-    & > tr {
-      & > td {
-        padding: 10px 16px;
-      }
+    & tbody > tr > td {
+      padding: 10px 16px;
     }
   }
   
