@@ -1,26 +1,32 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE IF NOT EXISTS mtvpunks;
 
 CREATE TABLE users (
-  id bigserial PRIMARY KEY,
-  address text NOT NULL,
-  nonce text NULL,
-  date_joined timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
-);
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `address` VARCHAR(80) NOT NULL,
+  `nonce` VARCHAR(80) NULL,
+  `date_joined` TIMESTAMP DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 CREATE TABLE proposals (
-  id bigserial PRIMARY KEY,
-  user_id bigint NOT NULL REFERENCES users(id),
-  name text NOT NULL,
-  description text NOT NULL,
-  status int,
-  created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
-  finished_at timestamp without time zone 
-);
+  `id` INT(11) NOT NULL AUTO_INCREMENT=20,
+  `user_id` INT(11) NOT NULL,
+  `name` VARCHAR(200) NOT NULL,
+  `description` text NOT NULL,
+  `status` TINYINT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT current_timestamp(),
+  `finished_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 CREATE TABLE votes (
-  id bigserial PRIMARY KEY,
-  user_id bigint NOT NULL REFERENCES users(id),
-  proposal_id bigint NOT NULL REFERENCES proposals(id),
-  vote: int NOT NULL,
-  created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
-);
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) NOT NULL,
+  `proposal_id` INT(11) NOT NULL,
+  `vote` TINYINT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT current_timestamp(),
+  PRIMARY KEY (id),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`proposal_id`) REFERENCES `proposals` (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;

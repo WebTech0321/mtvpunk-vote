@@ -12,7 +12,7 @@ import { remainingTime } from "../../utils";
 const MAX_PROPOSAL_PER_PAGE = 3;
 
 const SectionProposal = () => {
-    const router = useRouter
+    const router = useRouter();
 
     const [page, setPage] = useState(1)
     const [pages, setPages] = useState(1)
@@ -45,6 +45,7 @@ const SectionProposal = () => {
             notificationWarning(`${remainingTime(remainTime)} until next submit`)
         })
         .catch((e) => {
+          console.log(e)
           notificationWarning("You have already posted today...")
         })
       

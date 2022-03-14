@@ -38,7 +38,7 @@ export default function Submit(props) {
                     setPending(false)
                     if(resp.data?.success) {
                         notificationSuccess("Success to submit proposal")
-                        router.push(`proposal/${resp.data.proposal.id}`)
+                        router.push(`proposal/${resp.data.id}`)
                     } else {
                         notificationDanger("Failed to submit proposal")    
                     }

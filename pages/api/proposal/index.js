@@ -32,8 +32,8 @@ export default async function handler(req, res) {
         if(remainTime > 0)
             return res.status(400).json({ errorMessage: 'need to wait to submit next proposal' });
 
-        const proposal = await proposalService.createProposal(req.userId, title, description)
-        return res.status(200).send({success: true, proposal: proposal})
+        const id = await proposalService.createProposal(req.userId, title, description)
+        return res.status(200).send({success: true, id: id})
     }
     
     return res.status(405).send({ message: 'Wrong request' })

@@ -32,9 +32,9 @@ export default async function handler(req, res) {
         if(req.address !== address)
             return res.status(401).json({ errorMessage: 'error with jwt' });
 
-        const result = await voteService.voteProposal(req.userId, id, vote)
+        const voteId = await voteService.voteProposal(req.userId, id, vote)
 
-        return res.status(200).send({success: true, vote: result})
+        return res.status(200).send({success: true, id: voteId})
     }
     
     return res.status(405).send({ message: 'Wrong request' })
