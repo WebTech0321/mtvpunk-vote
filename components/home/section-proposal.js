@@ -7,7 +7,6 @@ import Proposal from "../proposal";
 import Pagination from "../pagination";
 import ProposalApi from "../../api/ProposalApi"
 import { notificationWarning } from "../../utils/notification";
-import { remainingTime } from "../../utils";
 
 const MAX_PROPOSAL_PER_PAGE = 3;
 
@@ -36,19 +35,7 @@ const SectionProposal = () => {
     }, [page, proposals])
 
     const gotoSubmit = () => {
-      ProposalApi.getRemainingTimeForNext()
-        .then((resp) => {
-          const remainTime = resp.data?.data
-          if(remainTime === 0)
-            router.push(`submit`)
-          else
-            notificationWarning(`${remainingTime(remainTime)} until next submit`)
-        })
-        .catch((e) => {
-          console.log(e)
-          notificationWarning("You have already posted today...")
-        })
-      
+      router.push(`submit`)      
     }
 
     return (

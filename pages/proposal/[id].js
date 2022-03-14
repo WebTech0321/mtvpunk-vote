@@ -48,6 +48,7 @@ export default function ProposalDetails({ proposal, votes }) {
     const { getTotalSupply, getVoting, getVoteOf, voteProposal, executeVoting } = useContracts()
 
     const [pending, setPending] = useState(false)
+    const [pendingNo, setPendingNo] = useState(false)
     const [totalSupply, setTotalSupply] = useState()
     const [voteStatus, setVoteStatus] = useState()
     const [myVoteStatus, setMyVoteStatus] = useState()
@@ -84,8 +85,10 @@ export default function ProposalDetails({ proposal, votes }) {
         if(!connected || !walletAddress) {
             return handleConnect()
         }
-
-        setPending(true)
+        if(vote === STATUS_ACCEPTED)
+            setPending(true)
+        else
+            setPendingNo(true)
         
         voteProposal(id, vote).then((result) => {
             if(result?.hash){
@@ -94,6 +97,7 @@ export default function ProposalDetails({ proposal, votes }) {
                     ProposalApi.vote(id, walletAddress, vote)
                     .then((resp) => {
                         setPending(false)
+                        setPendingNo(false)
                         if(resp.data?.success) {
                             notificationSuccess("Success to vote proposal")
                             router.reload()
@@ -104,15 +108,18 @@ export default function ProposalDetails({ proposal, votes }) {
                     .catch((error) => {
                         console.log(error)
                         setPending(false)
+                        setPendingNo(false)
                         notificationDanger("Failed to save database")
                     })
                 })
                 .catch((error) => { 
                     setPending(false)
+                    setPendingNo(false)
                     notificationDanger("Failed transaction");
                 })
             } else {
                 setPending(false)
+                setPendingNo(false)
                 notificationDanger("Failed to vote proposal")    
             }
         })
@@ -143,15 +150,15 @@ export default function ProposalDetails({ proposal, votes }) {
                         </div>
                         {myVoteStatus === STATUS_NOT_APPLIED && 
                         <div className="d-flex">
-                            <Button variant="secondary" className="btn-vote me-3" onClick={voteAgree} disabled={pending}>
+                            <Button variant="secondary" className="btn-vote me-3" onClick={voteAgree} disabled={pending || pendingNo}>
                                 <span>Yes</span>
                                 {pending && 
                                 <Spinner animation="border" role="status" size="sm" className="ms-1" />
                                 }
                             </Button>
-                            <Button variant="secondary" className="btn-vote" onClick={voteDisagree} disabled={pending}>
+                            <Button variant="secondary" className="btn-vote" onClick={voteDisagree} disabled={pending || pendingNo}>
                                 <span>No</span>
-                                {pending && 
+                                {pendingNo && 
                                 <Spinner animation="border" role="status" size="sm" className="ms-1" />
                                 }
                             </Button>

@@ -72,7 +72,7 @@ const getRemainTimeToSubmit = async (user_id) => {
       if (err) return reject(err)
       if(result && result.length > 0) {
         const remainingTime = DAY - (new Date().getTime() - new Date(result[0].created_at).getTime()) 
-        return remainingTime > 0 ? remainingTime : 0
+        resolve(remainingTime > 0 ? remainingTime : 0)
       } else 
         resolve(0)
     });

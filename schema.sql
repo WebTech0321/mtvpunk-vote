@@ -9,7 +9,7 @@ CREATE TABLE users (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 CREATE TABLE proposals (
-  `id` INT(11) NOT NULL AUTO_INCREMENT=20,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) NOT NULL,
   `name` VARCHAR(200) NOT NULL,
   `description` text NOT NULL,
@@ -19,6 +19,8 @@ CREATE TABLE proposals (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+ALTER TABLE proposals AUTO_INCREMENT = 0;
 
 CREATE TABLE votes (
   `id` INT(11) NOT NULL AUTO_INCREMENT,

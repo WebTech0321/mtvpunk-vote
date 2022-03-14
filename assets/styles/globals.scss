@@ -593,6 +593,45 @@ footer {
   border-radius: 50%;
 }
 
+
+.co-modal {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 90;
+  padding: $spacer;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+  cursor: default;
+}
+
+.co-modal-mask {
+  position: absolute;
+  inset: 0%;
+  z-index: 91;
+}
+
+.co-modal-container {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(105.48deg, rgba(255, 255, 255, 0.45) 0.81%, rgba(255, 255, 255, 0.3) 98.62%);
+  opacity: 0.95;
+  backdrop-filter: blur(60px);
+  border-radius: 8px;
+  padding: 16px;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 @media (max-width: ($screen-lg - 1px)){
 
   footer {
