@@ -616,7 +616,7 @@ footer {
 .co-modal-container {
   position: absolute;
   z-index: 100;
-  width: 100%;
+  width: calc(100% - 40px);
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
@@ -631,6 +631,9 @@ footer {
   transform: translate(-50%, -50%);
 }
 
+.submit-issue-logo {
+  width: 100px;
+}
 
 @media (max-width: ($screen-lg - 1px)){
 
@@ -874,5 +877,9 @@ footer {
   
   .label-vote-status {
     font-size: 14px;
+  }
+  
+  .submit-issue-logo {
+    width: 60px;
   }
 }
