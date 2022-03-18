@@ -1,23 +1,13 @@
 const db = require('../db');
 
 const voteProposal = async (user_id, proposal_id, vote) => {
-  return new Promise((resolve, reject) => {
-    const sql = `INSERT INTO votes (user_id, proposal_id, vote) VALUES (${user_id}, ${proposal_id}, ${vote})`
-    db.query(sql, function (err, result) {
-      if (err) return reject(err)
-      resolve(result.insertId)
-    });
-  })
+  const proposal = await db.one('INSERT INTO votes (user_id, proposal_id, vote) VALUES ($1, $2, $3) RETURNING *', [user_id, proposal_id, vote]);
+  return proposal;
 };
 
 const getVotesOfProposal = async (proposal_id) => {
-  return new Promise((resolve, reject) => {
-    const sql = `SELECT votes.id, votes.vote, votes.created_at, users.address FROM votes LEFT JOIN users ON users.id = votes.user_id WHERE proposal_id=${proposal_id} ORDER BY created_at`
-    db.query(sql, function (err, result) {
-      if (err) return reject(err)
-      resolve(result)
-    });
-  })
+  const votes = await db.manyOrNone("SELECT votes.id, votes.vote, votes.created_at AT TIME ZONE 'UTC' as created_at, users.address FROM votes LEFT JOIN users ON users.id = votes.user_id WHERE proposal_id=$1 ORDER BY created_at", [proposal_id]);
+  return votes;
 };
 
 module.exports = {
