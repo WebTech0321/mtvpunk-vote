@@ -31,7 +31,7 @@ const NavBar = () => {
         <BNavbar collapseOnSelect expand="xl" className="land-nav navbar-default" variant="dark">
             <div className="container">
                 <BNavbar.Brand href="#" className="d-none d-xl-block">
-                    <img src={imgLogo} alt="logo" />
+                    <div className="logo-title">MTVPunks</div>
                 </BNavbar.Brand>
 
                 <Row className="navbar-header align-items-center d-xl-none w-100 h-100 gx-0">
@@ -47,7 +47,7 @@ const NavBar = () => {
                     </Col>
                     <Col xs={8} className="d-flex justify-content-center">
                         <BNavbar.Brand href="#" className="d-xl-none mx-auto">
-                            <img src={imgLogo} alt="logo" />
+                            <div className="logo-title">MTVPunks</div>
                         </BNavbar.Brand>
                     </Col>
                     <Col xs={2}>
@@ -57,7 +57,7 @@ const NavBar = () => {
                 <BNavbar.Collapse id="responsive-navbar-nav">
                     <Nav className="nav w-100 justify-content-end align-items-center" as="ul">
                         <Nav.Item as="li">
-                            <Nav.Link href="#">Home</Nav.Link>
+                            <Nav.Link href="http://mtvpunks.com/">Home</Nav.Link>
                         </Nav.Item>
                         <Nav.Item as="li">
                             <Link href="/">Main</Link>

@@ -101,21 +101,20 @@ const Provider = ({ children }) => {
 
           return signature
         }).then(async (signature) => {
-          try {
-            AuthApi.signin(accounts[0], signature)
-            .then((resp) => {
-              setJWT(resp.data.jwt)
-            
-              if(window.localStorage) {
-                window.localStorage.setItem("wallet_connect", true);
-                window.localStorage.setItem("jwt", resp.data.jwt)
-              }
-            })
-          } catch (err) {
-            throw new Error(
-              'Failed to sign.'
-            );          
-          }
+          AuthApi.signin(accounts[0], signature)
+          .then((resp) => {
+            setJWT(resp.data.jwt)
+          
+            if(window.localStorage) {
+              window.localStorage.setItem("wallet_connect", true);
+              window.localStorage.setItem("jwt", resp.data.jwt)
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            setConnected(false)
+            setSignInOnProgress(false)
+          })
         }).then(() => {
           onCompleteConnect();
         })

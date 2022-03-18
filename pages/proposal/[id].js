@@ -16,6 +16,7 @@ import imgStatus from "../../assets/image/status.svg"
 const STATUS_NOT_APPLIED = 0
 const STATUS_ACCEPTED = 1
 const STATUS_REJECTED = 2
+const PROPOSAL_LIFETIME = 3600 * 24 * 7 * 1000;  // 7 days
 
 export async function getServerSideProps(context) {
     const res = await fetch(`${server}/api/proposal/${context.params.id}`)
@@ -59,7 +60,7 @@ export default function ProposalDetails({ proposal, votes }) {
     }, [getTotalSupply])
     
     useEffect(async () => {
-        const result = await getVoting(id)
+        const result = await getVoting(id)        
         if(result)
             setVoteStatus(result)
     }, [getVoting])
@@ -139,7 +140,7 @@ export default function ProposalDetails({ proposal, votes }) {
                         </div>
                         <Row className="gy-2 gx-lg-4">
                             <Col sm='auto'>
-                                <ProposalStatus status="Active" />
+                                <ProposalStatus status={proposal.status} />
                             </Col>
                             <Col>
                                 <Account prefix="Created by " address={proposal.address} />
@@ -209,7 +210,7 @@ export default function ProposalDetails({ proposal, votes }) {
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">End date</div>
-                                <div>{datetime2str(proposal.created_at)}</div>
+                                <div>{datetime2str((new Date(proposal.created_at)).getTime() + PROPOSAL_LIFETIME)}</div>
                             </div>
                             <div className="d-flex justify-content-between mb-2">
                                 <div className="label-vote-status">Minted NFTs</div>

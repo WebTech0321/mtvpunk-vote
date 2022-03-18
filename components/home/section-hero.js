@@ -14,7 +14,7 @@ const SectionHero = () => {
                     </div>
                 </Col>
                 <Col lg={6} className="py-3 ps-lg-5">
-                    <h2>MPVPunks voting is purpose to set the direction of development by the DAO members.</h2>
+                    <h2>MTVPunks voting purpose is to set the direction of development by the DAO members.</h2>
                     <h3 className="hero-description">
                         Anyone can be MTVPunks DAO members.
                     </h3>

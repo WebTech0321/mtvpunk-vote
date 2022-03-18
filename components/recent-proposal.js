@@ -6,11 +6,14 @@ const RecentProposal = ({ proposal }) => {
     const [ acceptedPercent, setAcceptedPercent] = useState(0)
     const { getVoting } = useContracts()
     
-    useEffect(async () => {
-        const result = await getVoting(proposal.id)
-        if(result)
-            setAcceptedPercent(result.total === 0 ? 0 : result.accepted * 100 / result.total)
-    }, [getVoting])
+    useEffect(() => {
+        async function fetchData() {
+            const result = await getVoting(proposal.id)
+            if(result)
+                setAcceptedPercent(result.total === 0 ? 0 : result.accepted * 100 / result.total)
+        }
+        fetchData()
+    }, [getVoting, proposal])
     
     return (
 	    <div className="recent-proposal-card">

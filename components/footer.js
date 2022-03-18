@@ -9,7 +9,7 @@ const Footer = () => {
 			<div className="container">
                 <Row className="gy-4">
                     <Col xxl={4}>
-                        <img src={imgLogo} alt="logo" />
+                        <div className="logo-title">MTVPunks</div>
                         <div className="mt-3 mx-auto mx-lg-0" style={{maxWidth: "360px"}}>
                             MTVPunks DAO is community
                             running with thousands of
@@ -21,27 +21,27 @@ const Footer = () => {
                             <Col lg={4}>
                                 <h4 className="mb-lg-4 mb-2">ABOUT US</h4>
                                 <div className="mb-2">
-                                    <a href="#" target="_blank">
+                                    <a  target="_blank" rel="noreferrer">
                                         About
                                     </a> 
                                 </div>                
                                 <div className="mb-2">
-                                    <a href="#" target="_blank">
+                                    <a  target="_blank" rel="noreferrer">
                                         FAQ
                                     </a>
                                 </div>       
                                 <div className="mb-2">
-                                    <a href="#" target="_blank">
+                                    <a  target="_blank" rel="noreferrer">
                                         Contact
                                     </a>
                                 </div>
                                 <div className="mb-2">
-                                    <a href="#" target="_blank">
+                                    <a  target="_blank" rel="noreferrer">
                                         Terms of Service
                                     </a>
                                 </div>
                                 <div className="mb-2">
-                                    <a href="#" target="_blank">
+                                    <a  target="_blank" rel="noreferrer">
                                         Privacy
                                     </a>
                                 </div>
@@ -55,13 +55,13 @@ const Footer = () => {
                                     </a> 
                                 </div>                 */}
                                 <div className="mb-2">
-                                    <a href="https://twitter.com/RealMTVPunks" target="_blank" className="follow-icon">
+                                    <a href="https://twitter.com/RealMTVPunks" target="_blank" rel="noreferrer" className="follow-icon">
                                         <FontAwesomeIcon icon={['fab', 'twitter']}/>
                                         <span className="ms-2">Twitter</span>
                                     </a>
                                 </div>
                                 <div className="mb-2">
-                                    <a href="https://discord.gg/ztQByx4r" target="_blank" className="follow-icon">
+                                    <a href="https://discord.gg/ztQByx4r" target="_blank" rel="noreferrer" className="follow-icon">
                                         <FontAwesomeIcon icon={['fab', 'discord']}/>
                                         <span className="ms-2">Discord</span>
                                     </a>
@@ -83,7 +83,7 @@ const Footer = () => {
                                 <h4 className="mb-lg-4 mb-2">CONTACT</h4>
                                 <div className="d-inline-flex mb-lg-3 mb-2 mail-icon no-wrap">
                                     <FontAwesomeIcon icon={'envelope'} />
-                                    <a className="d-inline ms-2" href="mailto:mtvpunks@gmail.com">mtvpunks@gmail.com</a>
+                                    <a className="d-inline ms-2" rel="noreferrer" href="mailto:mtvpunks@gmail.com">mtvpunks@gmail.com</a>
                                 </div>
                                 {/* <div className="d-flex align-items-center justify-content-center justify-content-lg-start">
                                     <a href="#" target="_blank" className="social-icon">

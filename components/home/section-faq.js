@@ -10,16 +10,16 @@ const dataQA = [
         `
     },
     {
-        title: "How can be a MTVPunks member",
-        description: "SolarMineX solar mining can be done anywhere receives sunlight.<br/>In addition to the photovoltaic solar energy system installed in homes and workplaces, in case of obtaining from the SolarMineX Mobile Solar Mining device mining can even be done while traveling, enjoying the beach or walking on the road."
+        title: "How can be a MTVPunks member?",
+        description: "If you own MTVPunks NFT, you can be a MTPunks DAO member."
     },
     {
         title: "Who can propose suggestion?",
-        description: "No. SolarMineX solar mining does not require expensive mining rigs, graphics cards or computers and megawatts of electricity. This is against the nature of SolarMineX solar mining. SolarMineX solar mining aims not to consume electricity, but to generate electricity with solar energy with a harmless method."
+        description: "	The member who has more than 20 NFTs can post proposal."
     },
     {
         title: "How many proposals can be posted in a day?",
-        description: "Thanks to the unique formula of SolarMineX, mining rewards are given equally for each unit of electricity produced. More mining that generates more electricity earns more."
+        description: "20 proposals will be posted in a day and a member can post a proposal in a day."
     },
 ]
 

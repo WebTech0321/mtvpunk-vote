@@ -635,6 +635,13 @@ footer {
   width: 100px;
 }
 
+.logo-title {
+  font-size: 42px;
+  font-weight: 700;
+  
+  text-shadow: 1px 3px 8px $primary-color;
+}
+
 @media (max-width: ($screen-lg - 1px)){
 
   footer {
@@ -881,5 +888,10 @@ footer {
   
   .submit-issue-logo {
     width: 60px;
+  }
+
+  .logo-title {
+    font-size: 18px;
+    text-shadow: 1px 1px $primary-color;
   }
 }
