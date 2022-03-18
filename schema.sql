@@ -13,7 +13,7 @@ CREATE TABLE proposals (
   name text NOT NULL,
   description text NOT NULL,
   status int,
-  created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
+  created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc'),
   finished_at timestamp without time zone 
 );
 
@@ -21,6 +21,6 @@ CREATE TABLE votes (
   id bigserial PRIMARY KEY,
   user_id bigint NOT NULL REFERENCES users(id),
   proposal_id bigint NOT NULL REFERENCES proposals(id),
-  vote: int NOT NULL,
+  vote int NOT NULL,
   created_at timestamp without time zone NOT NULL DEFAULT (NOW() at time zone 'utc')
 );
